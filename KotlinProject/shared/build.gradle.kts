@@ -9,7 +9,7 @@ plugins {
 }
 
 kotlin {
-
+    // iOS targets
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -20,8 +20,10 @@ kotlin {
         }
     }
 
+    // JVM target
     jvm()
 
+    // Android target
     android {
         namespace = "org.example.project.shared"
 
@@ -40,24 +42,11 @@ kotlin {
             isIncludeAndroidResources = true
         }
 
-        withDeviceTestBuilder {
-            sourceSetTreeName = "test"
-        }.configure {
-            instrumentationRunner =
-                "androidx.test.runner.AndroidJUnitRunner"
-        }
+        // Temporarily removed device-test configuration
+        // until the Gradle compatibility issue is resolved.
     }
 
-
     sourceSets {
-
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.compose.uiToolingPreview)
-                implementation(libs.compose.uiTooling)
-            }
-        }
-
         val commonMain by getting {
             dependencies {
                 implementation(libs.compose.runtime)
@@ -66,8 +55,18 @@ kotlin {
                 implementation(libs.compose.ui)
                 implementation(libs.compose.components.resources)
                 implementation(libs.compose.uiToolingPreview)
+
                 implementation(libs.androidx.lifecycle.viewmodelCompose)
                 implementation(libs.androidx.lifecycle.runtimeCompose)
+
+                implementation(compose.materialIconsExtended)
+            }
+        }
+
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.compose.uiToolingPreview)
+                implementation(libs.compose.uiTooling)
             }
         }
 
@@ -84,8 +83,6 @@ kotlin {
             }
         }
 
-        getByName("androidDeviceTest").dependencies {
-            implementation(libs.androidx.testRunner)
-        }
+        // Temporarily removed androidDeviceTest dependency.
     }
 }
